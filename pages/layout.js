@@ -1,7 +1,10 @@
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession, signIn } from "next-auth/react";
 import Nav from "@/components/Nav";
+import { IoMenu } from "react-icons/io5";
+import { useState } from "react";
 
 export default function Layout({ children }) {
+  const [showNav, setShowNav] = useState(false);
   const { data: session, status } = useSession();
 
   if (status === "loading") {
@@ -24,10 +27,15 @@ export default function Layout({ children }) {
   }
 
   return (
-    <div className="bg-blue-900 min-h-screen flex">
-      <Nav />
-      <div className="bg-white flex-grow mt-2 mr-2 mb-2 p-4 rounded-lg">
-        {children}
+    <div className="bg-blue-900 min-h-screen">
+      {/* <button onClick={() => setShowNav(!showNav)}>
+        <IoMenu />
+      </button> */}
+      <div className="flex">
+        <Nav show={showNav}/>
+        <div className="bg-white flex-grow mt-2 mr-2 mb-2 p-4 rounded-lg">
+          {children}
+        </div>
       </div>
     </div>
   );

@@ -1,9 +1,11 @@
 import { Product } from "../lib/models/ProductModel";
 import { mongooseConnect } from "../lib/mongoose";
+import { isAdminRequest } from "./auth/[...nextauth]";
 
 export default async function handler(req, res) {
   const { method } = req;
   await mongooseConnect();
+  await isAdminRequest(req, res);
 
   if (method === "GET") {
     if (req.query?.id) {
@@ -14,23 +16,33 @@ export default async function handler(req, res) {
   }
 
   if (method === "POST") {
-    const { title, description, price } = req.body;
-    const productDoc = await Product.create({ title, description, price });
+    const { title, description, price, images, category, properties } =
+      req.body;
+    const productDoc = await Product.create({
+      title,
+      description,
+      price,
+      images,
+      category,
+      properties,
+    });
     res.json(productDoc);
   }
 
   if (method === "PUT") {
-    const { title, description, price, _id } =
+    const { title, description, price, images, category, properties, _id } =
       req.body;
     await Product.updateOne(
       { _id },
-      { title, description, price }
+      { title, description, price, images, category, properties }
     );
     res.json(true);
   }
 
-  if(method === "DELETE"){
-    if(req.query?.id){await Product.deleteOne({_id: req.query?.id})};
+  if (method === "DELETE") {
+    if (req.query?.id) {
+      await Product.deleteOne({ _id: req.query?.id });
+    }
     res.json(true);
   }
 }

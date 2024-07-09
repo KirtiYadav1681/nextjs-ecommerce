@@ -22,14 +22,14 @@ const Products = () => {
         <thead>
           <tr>
             <th>Product name</th>
-            <th></th>
+            <th style={{textAlign: 'right', paddingRight:"80px"}}>Actions</th>
           </tr>
         </thead>
         <tbody>
           {products?.map((product) => (
             <tr key={product._id}>
               <td>{product.title}</td>
-              <td>
+              <td style={{display:"flex", flexDirection:"row", justifyContent:"flex-end"}}>
                 <Link href={`/products/edit/${product._id}`} className="btn-default">
                   <MdEdit />
                   Edit

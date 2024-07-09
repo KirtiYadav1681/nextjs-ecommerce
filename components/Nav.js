@@ -5,8 +5,43 @@ import { CiViewList } from "react-icons/ci";
 import { FaBoxOpen, FaStarOfLife } from "react-icons/fa";
 import { IoHome } from "react-icons/io5";
 import { useRouter } from "next/router";
+import { BiSolidCategory, BiLogOut } from "react-icons/bi";
+import { signOut } from "next-auth/react";
 
-const Layout = () => {
+const links = [
+  {
+    id: 1,
+    name: "Dashboard",
+    path: "/",
+    icon: <IoHome />,
+  },
+  {
+    id: 2,
+    name: "Products",
+    path: "/products",
+    icon: <CiViewList />,
+  },
+  {
+    id: 5,
+    name: "Categories",
+    path: "/categories",
+    icon: <BiSolidCategory />,
+  },
+  {
+    id: 3,
+    name: "Orders",
+    path: "/orders",
+    icon: <FaBoxOpen />,
+  },
+  {
+    id: 4,
+    name: "Settings",
+    path: "/settings",
+    icon: <MdOutlineSettings />,
+  },
+];
+
+const Layout = ({show}) => {
   const pathname = useRouter().pathname;
 
   const inactiveLink = {
@@ -27,46 +62,31 @@ const Layout = () => {
     borderBottomLeftRadius: "10px",
   };
 
-  const links = [
-    {
-      id: 1,
-      name: "Dashboard",
-      path: "/",
-      icon: <IoHome />,
-    },
-    {
-      id: 2,
-      name: "Products",
-      path: "/products",
-      icon: <CiViewList />,
-    },
-    {
-      id: 3,
-      name: "Orders",
-      path: "/orders",
-      icon: <FaBoxOpen />,
-    },
-    {
-      id: 4,
-      name: "Settings",
-      path: "/settings",
-      icon: <MdOutlineSettings />,
-    },
-  ];
+  async function logout(){
+    await Router.push('/');
+    await signOut();
+  }
 
   return (
     <aside
+    // className={`bg-blue-900 min-h-screen ${show ? "left-0" : "-left-full"} fixed top-0 w-full h-full`}
       className="bg-blue-900 min-h-screen"
-      style={{color:"white", padding:"12px 0 12px 12px"}}
+      style={{ color: "white", padding: "12px 0 12px 12px" }}
     >
       <Link
         href="/"
-        style={{display:"flex",alignItems:"center", gap:"4px", marginRight: "12px", marginBottom:"16px"}}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "4px",
+          marginRight: "12px",
+          marginBottom: "16px",
+        }}
       >
         <FaStarOfLife />
         <span>EcommerceAdmin</span>
       </Link>
-      <nav style={{display:"flex", flexDirection: "column"}}>
+      <nav style={{ display: "flex", flexDirection: "column" }}>
         {links.map((link) => (
           <Link
             key={link.id}
@@ -77,6 +97,10 @@ const Layout = () => {
             {link.name}
           </Link>
         ))}
+        <button onClick={logout} style={inactiveLink}>
+          <BiLogOut />
+          Logout
+        </button>
       </nav>
     </aside>
   );

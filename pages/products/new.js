@@ -1,7 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import Layout from "../layout";
-import axios from "axios";
-import { useRouter } from "next/navigation";
 import ProductForm from "@/components/ProductForm";
 
 const NewProduct = () => {
