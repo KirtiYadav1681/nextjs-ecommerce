@@ -28,7 +28,7 @@ const DeleteProduct = () => {
     <Layout>
       <div className="text-center">
         <h3 className="text-lg my-4 font-semibold">
-          Do you really want to delete "<b>{productDetail?.title}</b>"?
+          Do you really want to delete &lsquo;<b>{productDetail?.title}</b>&rsquo;?
         </h3>
         <div>
           <button className="btn-default" onClick={deleteProduct}>
