@@ -43,6 +43,7 @@ const links = [
 
 const Layout = ({show}) => {
   const pathname = useRouter().pathname;
+  const router = useRouter();
 
   const inactiveLink = {
     display: "flex",
@@ -63,13 +64,12 @@ const Layout = ({show}) => {
   };
 
   async function logout(){
-    await Router.push('/');
+    await router.push('/');
     await signOut();
   }
 
   return (
     <aside
-    // className={`bg-blue-900 min-h-screen ${show ? "left-0" : "-left-full"} fixed top-0 w-full h-full`}
       className="bg-blue-900 min-h-screen"
       style={{ color: "white", padding: "12px 0 12px 12px" }}
     >
