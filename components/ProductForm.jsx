@@ -53,8 +53,9 @@ export default function ProductForm({
       } catch (error) {
         console.error("Error saving product", error);
       }
+    }else{
+      alert("Please fill required fields.");
     }
-    alert("Please fill required fields.");
   };
 
   if (goToProducts) {
