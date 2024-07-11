@@ -4,6 +4,7 @@ import axios from "axios";
 import { MdOutlineFileUpload } from "react-icons/md";
 import Image from "next/image";
 import Spinner from "./Spinner";
+import { SyncLoader } from "react-spinners";
 
 export default function ProductForm({
   _id,
@@ -41,16 +42,19 @@ export default function ProductForm({
       category,
       properties: productProperties,
     };
-    try {
-      if (_id) {
-        await axios.put(`/api/products/${_id}`, data);
-      } else {
-        await axios.post("/api/products", data);
+    if (title && price && categories) {
+      try {
+        if (_id) {
+          await axios.put(`/api/products?_id=${_id}`, data);
+        } else {
+          await axios.post("/api/products", data);
+        }
+        setGoToProducts(true);
+      } catch (error) {
+        console.error("Error saving product", error);
       }
-      setGoToProducts(true);
-    } catch (error) {
-      console.error("Error saving product", error);
     }
+    alert("Please fill required fields.");
   };
 
   if (goToProducts) {
@@ -73,7 +77,6 @@ export default function ProductForm({
       });
       if (response.data.message === "Success") {
         setImages([...images, response.data.imgUrl]);
-        console.log(response.data.imgUrl);
       } else {
         console.error("File upload failed", response.data);
       }
@@ -82,6 +85,8 @@ export default function ProductForm({
     }
     setIsUploading(false);
   };
+
+  console.log(isUploading, "isUploading");
 
   function updateImagesOrder(newImages) {
     setImages(newImages);
@@ -115,14 +120,14 @@ export default function ProductForm({
 
   return (
     <form onSubmit={submitHandler}>
-      <label>Product Name</label>
+      <label>Product Name *</label>
       <input
         type="text"
         placeholder="Add a new product"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       />
-      <label>Category</label>
+      <label>Category *</label>
       <select value={category} onChange={(e) => setCategory(e.target.value)}>
         <option value="">Uncategorized</option>
         {categories?.map((cat) => (
@@ -186,7 +191,7 @@ export default function ProductForm({
         value={description}
         onChange={(e) => setDescription(e.target.value)}
       />
-      <label>Price (in INR)</label>
+      <label>Price (in INR) *</label>
       <input
         type="number"
         placeholder="Price"
